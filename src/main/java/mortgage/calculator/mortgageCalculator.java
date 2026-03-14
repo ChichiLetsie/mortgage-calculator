@@ -6,6 +6,12 @@ import java.util.Scanner;
 
 public class mortgageCalculator {
     public static void main(String[] arg){
+
+        //Initiate constants
+        //Avoiding magic numbers
+        final byte MONTH_IN_YEARS = 12;
+        final byte PERCENT = 100;
+
         Scanner scanner = new Scanner(System.in);
 
         //INPUTS
@@ -15,17 +21,22 @@ public class mortgageCalculator {
 
         //Annual Interest amount
         System.out.print("Annual Interest Rate: ");
-        Double interestRate = (scanner.nextDouble()/100)/12;
+        Float annualInterestRate = scanner.nextFloat();
+        Float annualMonthlyRate = annualInterestRate / PERCENT /MONTH_IN_YEARS;
 
         // years in months
         System.out.print("Period(Years): ");
-        int period = scanner.nextInt() * 12;
+        byte years = scanner.nextByte() ;
+        int numberOfPayments = years * MONTH_IN_YEARS;
 
         //OUTPUT
         //Calculating Mortgage
-        NumberFormat mortgage = NumberFormat.getCurrencyInstance();
-        String m = mortgage.format(principal * ((interestRate * Math.pow(1+interestRate,period))/(Math.pow(1+interestRate,period)-1)));
-        System.out.println("Mortgage: "+ m);
+        double mortgage = principal * ((annualMonthlyRate *
+                Math.pow(1+annualMonthlyRate,numberOfPayments))
+                /(Math.pow(1+annualMonthlyRate,numberOfPayments)-1));
+
+        String mortgageFormatted = NumberFormat.getCurrencyInstance().format(mortgage);
+        System.out.println("Mortgage: "+ mortgageFormatted);
 
     }
 }
